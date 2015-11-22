@@ -9,41 +9,34 @@ if ( !current_user_can( 'manage_options' ) ) {
 	exit;
 }?>
 
-<?php function add_suggest_script() {
-  wp_enqueue_script( 'suggest', get_bloginfo('wpurl').'/wp-includes/js/jquery/suggest.js', array(), '', true );
-}
-add_action( 'wp_enqueue_scripts', 'add_suggest_script' ); ?>
+<?php
+	// Scripts
+	function add_suggest_script() {
+  	wp_enqueue_script( 'suggest', get_bloginfo('wpurl').'/wp-includes/js/jquery/suggest.js', array(), '', true );
+	}
+	add_action( 'wp_enqueue_scripts', 'add_suggest_script' );
+
+	// Styles
+	wp_register_style(
+    'worthreading',
+    plugins_url( 'style.css', __FILE__ ),
+    array(),
+    '1.2',
+    'screen'
+	);
+	wp_enqueue_style( 'worthreading' );
+?>
 
     <html>
+      <head>
+				<title>Add bookmark</title>
+				<link rel="icon" href="<?php echo plugins_url( 'favicon-add.png' , __FILE__ ); ?>">
 
-        <head>
+      </head>
 
-        	<?php wp_head(); ?>
-
-			<title>Add bookmark</title>
-			<link rel="icon" href="<?php echo plugins_url( 'favicon-add.png' , __FILE__ ); ?>">
-
-			<style>
-				* { font-family:georgia,serif; font-size:16px;}
-				body { margin:40px 50px; padding:0; width:250px; }
-				label { display:block; float:left; width:250px; margin-top:5px; }
-				input { display:block; float:left; width:250px; margin:5px 0; border:1px solid black; padding:3px; }
-				#submit { margin-top:20px; padding:10px; background:#ddd; }
-				.ac_results { position:absolute; list-style:none; margin:0; padding:0; }
-					.ac_results li { background:#eee; padding:4px; width:240px; border-right:1px solid black; border-bottom:1px solid black; border-left:1px solid black; }
-					.ac_results li:hover, .ac_results li.ac_over { background:black; color:white; cursor:pointer; }
-				img { width:250px; height:auto; }
-				.success { color:green; }
-				.error { color:red; }
-			</style>
-
-        </head>
-
-        <body>
-
+      <body>
 
 			<?php
-
 				// if there is POST data, the form has been submitted
 				if( 'POST' == $_SERVER['REQUEST_METHOD'] && !empty( $_POST['action'] ) &&  $_POST['action'] == "new_post") {
 
@@ -57,50 +50,80 @@ add_action( 'wp_enqueue_scripts', 'add_suggest_script' ); ?>
 							'post_status'	=>	'publish',
 							'post_type'		=>	'bookmark'
 						);
-						print_r($new_post);
 						$post_id = wp_insert_post($new_post, true);
-						print_r($post_id);
+
 						// add the bookmark's meta data
         		add_post_meta($post_id, 'link_url',  $_POST['link_url'],  true);
         		add_post_meta($post_id, 'link_desc', $_POST['link_desc'], true);
         		add_post_meta($post_id, 'link_via',  $_POST['link_via'],  true);
 
-                		// give positive user feedback
-						echo '<p class="success">Bookmark added!</p><button onClick="window.close();" id="focusbutton">Close</button>';
-						echo "<script>window.onload=function(){ document.getElementById('focusbutton').focus(); }</script>";
+						// give positive user feedback
+						echo <<< EOF
+						<div id="head">
+							<h1>Worth Reading</h1>
+						</div>
+						<div class="msg">
+							<p>Published!</p>
+							<button onClick="window.close();" class="btn">Close</button>	
+						</div>
+						<script>window.onload=function(){ document.getElementById('focusbutton').focus(); }</script>
+EOF;
 
 					} else {
-
-						// give negative user feedback
-						echo '<p class="error">Please enter at least a title and URL for the bookmark!</p><button onClick="window.history.go(-1);" id="focusbutton">Back</button>';
-						echo "<script>window.onload=function(){ document.getElementById('focusbutton').focus(); }</script>";
-
+						
+						echo <<< EOF
+						<div id="head">
+							<h1>Worth Reading</h1>
+						</div>
+						<div class="msg">
+							<p>Please enter at least a title and URL for the bookmark.</p>
+							<button onClick="window.history.go(-1);" id="focusbutton">Back</button>
+						</div>
+						<script>window.onload=function(){ document.getElementById('focusbutton').focus(); }</script>
+EOF;
 					}
 
 				// if there is no POST data, display the form
 				} else {
 
 					?>
+					<div id="head">
+						<h1>Worth Reading</h1>
+					</div>
 
 					<form id="new_post" name="new_post" method="post" action="" enctype="multipart/form-data">
 
-						<label for="title">Title:</label>
-						<input type="text" id="title" tabindex="1" name="title" value="<?php if (strlen($_GET['title']) > 0 ) { echo $_GET['title']; } ?>" />
+						<div class="bookmark-title">
+							<label for="title">Title:</label>
+							<input type="text" id="title" tabindex="1" name="title" value="<?php if (strlen($_GET['title']) > 0 ) { echo $_GET['title']; } ?>" />	
+						</div>
+						
+						<div class="bookmark-url">
+							<label for="link_url">URL:</label>
+							<input type="text" id="link_url" tabindex="2" name="link_url" value="<?php if (strlen($_GET['url']) > 0 ) { echo $_GET['url']; } ?>" />	
+						</div>
 
-						<label for="link_url">URL:</label>
-						<input type="text" id="link_url" tabindex="2" name="link_url" value="<?php if (strlen($_GET['url']) > 0 ) { echo $_GET['url']; } ?>" />
+						<div class="bookmark-pub">
+							<label for="publications">Publication</label>
+							<input type="text" id="publications" tabindex="3" name="publications" />
+						</div>
 
-						<label for="publications">Tags (comma separated):</label>
-						<input type="text" id="publications" tabindex="3" name="publications" />
+						<div class="bookmark-desc">
+							<label for="link_desc">Description:</label>
+							<textarea type="text" id="link_desc" tabindex="4" name="link_desc" /><?php if (strlen($_GET['desc']) > 0 ) { echo $_GET['desc']; } ?></textarea>
+						</div>
+						
 						<script>window.onload=function(){ document.getElementById('publications').focus(); }</script>
-
-						<label for="link_desc">Description:</label>
-						<input type="text" id="link_desc" tabindex="4" name="link_desc" value="<?php if (strlen($_GET['desc']) > 0 ) { echo $_GET['desc']; } ?>" />
-
-						<label for="link_via">via:</label>
-						<input type="text" id="link_via" tabindex="5" name="link_via" />
-
-						<input type="submit" value="Save bookmark" tabindex="40" id="submit" name="submit" />
+						
+						<div class="bookmark-via">
+							<label for="link_via">via:</label>
+							<input type="text" id="link_via" tabindex="5" name="link_via" />	
+						</div>
+						
+						<div>
+							<input type="submit" value="Publish" tabindex="40" id="submit" class="btn" name="submit" />	
+						</div>
+						
 						<input type="hidden" name="action" value="new_post" />
 						<?php wp_nonce_field( 'new-post' ); ?>
 

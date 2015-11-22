@@ -1,0 +1,132 @@
+* {
+  font-family:georgia,serif;
+  font-family:Helvetica, Arial,sans-serif;
+  font-size:16px;
+}
+.hidden{
+  display: none;
+}
+body {
+  margin:0;
+  color:#222D49;
+}
+
+#head{
+  padding: 8px 0 10px 0;
+  background: #222D49;
+  color:#fff;
+}
+
+#head h1{
+  margin: 0;
+  color:#fff;
+  font-size: 18px;
+  font-weight: 300;
+  text-align: center;
+}
+
+form{
+  padding: 15px 10px;
+}
+form > div {
+  margin: 0 0 15px 0;
+  clear: both;
+  overflow: hidden;
+}
+label {
+  margin-bottom: 5px;
+  display:block;
+  font-size: 14px;
+  font-weight: 300;
+}
+input[type=text],
+input[type=email],
+input[type=url],
+input[type=password],
+textarea {
+  padding: 7px 5px;
+  width: 100%;
+  border-top: 1px solid #eee;
+  border-left: 1px solid #eee;
+  border-right: 1px solid #eee;
+  border-bottom: 1px solid #ddd;
+  border-radius: 2px;
+  color:#222D49;
+  font-weight: 900;
+  box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+  transition:border-color ease-in-out .15s,box-shadow ease-in-out .15s;
+}
+
+input[type=text]:focus,
+input[type=email]:focus,
+input[type=url]:focus,
+input[type=password]:focus,
+textarea:focus {
+  outline: 0;
+  border-color: #222D49;
+}
+
+.bookmark-title label{
+  display: none;
+}
+.bookmark-title input{
+  margin: 0;
+  font-weight: 600;
+  font-size: 18px;
+}
+.bookmark-url label{
+  display: none;
+}
+.bookmark-url input{
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.bookmark-desc {
+
+}
+.bookmark-desc textarea{
+  font-weight: 500;
+  font-size: 16px;
+  min-height: 100px;
+}
+
+.bookmark-pub input{
+  font-weight: 500;
+  font-size: 16px;
+}
+
+.bookmark-via input{
+  font-weight: 500;
+  font-size: 16px;
+}
+
+.btn,
+#submit {
+  padding:10px;
+  background:#222D49;
+  color:#fff;
+  font-weight: 900;
+  border:none;
+  border-radius: 3px;
+}
+.btn,
+#submit:hover{
+  cursor: pointer;
+  background:#29375C;
+}
+
+.msg{
+  margin:0;
+  padding: 10px;
+}
+.msg p{
+  font-weight: 800;
+  font-size:21px; 
+}
+.ac_results { position:absolute; list-style:none; margin:0; padding:0; }
+    .ac_results li { background:#eee; padding:4px; width:240px; border-right:1px solid black; border-bottom:1px solid black; border-left:1px solid black; }
+    .ac_results li:hover, .ac_results li.ac_over { background:black; color:white; cursor:pointer; }
+img { width:250px; height:auto; }
+.success { color:green; }
+.error { color:red; }
