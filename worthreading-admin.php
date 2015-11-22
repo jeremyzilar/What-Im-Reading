@@ -42,20 +42,20 @@ class worthReadingAdmin {
     * @param object $post WP post object
     */
     public static function sg_bookmark_metabox($post) {
-        $custom = get_post_custom($post->ID);
-        echo '<table width="100%">';
-        echo '<tr><td width="110"><b>URL:</b></td><td><input type="text" name="sg_bookmark_link_url" value="'.($custom && $custom['link_url'] ? htmlspecialchars(array_pop($custom['link_url'])) : '').'" style="width: 100%"/></td></tr>';
-        echo '<tr><td><b>Description:</b></td><td><input type="text" name="sg_bookmark_link_desc" value="'.($custom && $custom['link_desc'] ? htmlspecialchars(array_pop($custom['link_desc'])) : '').'" style="width: 100%"/></td></tr>';
-        echo '<tr><td><b>via:</b></td><td><input type="text" name="sg_bookmark_link_via" value="'.($custom && $custom['link_via'] ? htmlspecialchars(array_pop($custom['link_via'])) : '').'" style="width: 100%"/></td></tr>';
-        echo '</table>';
-        ?>
-        <script type="text/javascript">
-            jQuery(function(){
-                jQuery("#titlediv").after(jQuery("#sg_bookmark_headers").parent().detach());
-            });
-        </script>
-        <?php
-        wp_reset_query();
+      $custom = get_post_custom($post->ID);
+      echo '<table width="100%">';
+      echo '<tr><td width="110"><b>URL:</b></td><td><input type="text" name="sg_bookmark_link_url" value="'.($custom && $custom['link_url'] ? htmlspecialchars(array_pop($custom['link_url'])) : '').'" style="width: 100%"/></td></tr>';
+      echo '<tr><td><b>Description:</b></td><td><input type="text" name="sg_bookmark_link_desc" value="'.($custom && $custom['link_desc'] ? htmlspecialchars(array_pop($custom['link_desc'])) : '').'" style="width: 100%"/></td></tr>';
+      echo '<tr><td><b>via:</b></td><td><input type="text" name="sg_bookmark_link_via" value="'.($custom && $custom['link_via'] ? htmlspecialchars(array_pop($custom['link_via'])) : '').'" style="width: 100%"/></td></tr>';
+      echo '</table>';
+      ?>
+      <script type="text/javascript">
+          jQuery(function(){
+              jQuery("#titlediv").after(jQuery("#sg_bookmark_headers").parent().detach());
+          });
+      </script>
+      <?php
+      wp_reset_query();
     }
 
 
@@ -109,7 +109,7 @@ class worthReadingAdmin {
         desc = ''
     }
     var url = '" . get_bloginfo('wpurl') . "/bookmarks/add/?url=' + encodeURIComponent(location.href) + '&title=' + encodeURIComponent(document.title) + '&desc=' + desc;
-    window.open(url,'bookmark','left=20,top=20,width=350,height=500,toolbar=0,location=0,resizable=1');
+    window.open(url,'bookmark','left=20,top=20,width=550,height=500,toolbar=0,location=0,resizable=1');
 })();
 </code>";
 		$html .= wp_nonce_field('update-options');
