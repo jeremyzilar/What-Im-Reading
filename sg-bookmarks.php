@@ -13,6 +13,10 @@ License: GPL2
 /*  Copyright 2014 Sebastian Greger
 
     The development of this software was made possible using the following components:
+    
+    - sg-bookmarks by sebastiangreger
+      https://github.com/sebastiangreger/sg-bookmarks
+      Licensed Under: GNU General Public License v2 (GPL-2)
 
     - Wordpress-Bookmarks by aaronpk
       https://github.com/aaronpk/Wordpress-Bookmarks/
