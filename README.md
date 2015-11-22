@@ -1,4 +1,4 @@
-sg-bookmarks
+What I'm Reading
 ============
 
 An experimental WordPress 3.8 plugin to manage bookmarks with custom page type "bookmark" and custom taxonomy
