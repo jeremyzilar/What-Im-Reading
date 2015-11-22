@@ -1,32 +1,24 @@
 <?php
 
-
 // load wordpress (this is a dirty hack for now, discouraged by WordPress guidelines)
 require (dirname(__FILE__).'/../../../wp-config.php');
-
 
 // only available to admin user
 if ( !current_user_can( 'manage_options' ) ) {
 	echo "This functionality requires login!";
 	exit;
+}?>
+
+<?php function add_suggest_script() {
+  wp_enqueue_script( 'suggest', get_bloginfo('wpurl').'/wp-includes/js/jquery/suggest.js', array(), '', true );
 }
-
-
-?>
-
+add_action( 'wp_enqueue_scripts', 'add_suggest_script' ); ?>
 
     <html>
 
         <head>
 
-        	<?php /* load wp-internal js required for tag auto-suggestion */ ?>
-        	<script src="/wp-includes/js/jquery/jquery.js"></script>
-        	<script src="/wp-includes/js/jquery/suggest.js"></script>
-			<script type="text/javascript">
-				jQuery(window).load(function(){
-		        	jQuery('#bookmark_tags').suggest("<?php echo get_bloginfo('wpurl'); ?>/wp-admin/admin-ajax.php?action=ajax-tag-search&tax=bookmark_tag", {multiple:true, multipleSep: ","});
-				});		        	
-			</script>
+        	<?php wp_head(); ?>
 
 			<title>Add bookmark</title>
 			<link rel="icon" href="<?php echo plugins_url( 'favicon-add.png' , __FILE__ ); ?>">
@@ -62,15 +54,16 @@ if ( !current_user_can( 'manage_options' ) ) {
 						$new_post = array(
 							'post_title'	=>	$_POST['title'],
 							'tax_input' 	=>	array( 'bookmark_tag' => explode(",", $_POST['bookmark_tags']) ),
-							'post_status'	=>	'public',
+							'post_status'	=>	'publish',
 							'post_type'		=>	'bookmark'
 						);
-						$postid = wp_insert_post($new_post);
-
+						print_r($new_post);
+						$post_id = wp_insert_post($new_post, true);
+						print_r($post_id);
 						// add the bookmark's meta data
-                		add_post_meta($postid, 'link_url',  $_POST['link_url'],  true);
-                		add_post_meta($postid, 'link_desc', $_POST['link_desc'], true);
-                		add_post_meta($postid, 'link_via',  $_POST['link_via'],  true);
+        		add_post_meta($post_id, 'link_url',  $_POST['link_url'],  true);
+        		add_post_meta($post_id, 'link_desc', $_POST['link_desc'], true);
+        		add_post_meta($post_id, 'link_via',  $_POST['link_via'],  true);
 
                 		// give positive user feedback
 						echo '<p class="success">Bookmark added!</p><button onClick="window.close();" id="focusbutton">Close</button>';
@@ -118,8 +111,13 @@ if ( !current_user_can( 'manage_options' ) ) {
 				}
 
 			?>
+				<?php wp_footer(); ?>
 
-
+				<script type="text/javascript">
+				jQuery(window).load(function(){
+		        	jQuery('#bookmark_tags').suggest("<?php echo get_bloginfo('wpurl'); ?>/wp-admin/admin-ajax.php?action=ajax-tag-search&tax=bookmark_tag", {multiple:true, multipleSep: ","});
+				});		        	
+				</script>
         </body>
 
     </html>

@@ -1,12 +1,12 @@
 <?php
 
 /*
-Plugin Name: sg-bookmarks
-Plugin URI: https://github.com/sebastiangreger/sg-bookmarks
+Plugin Name: Worth Reading
+Plugin URI: https://github.com/jeremyzilar/Worth-Reading
 Description: Manage bookmarks with custom page type "bookmark" and custom taxonomy
 Version: 1.0
-Author: Sebastian Greger
-Author URI: http://sebastiangreger.net
+Author: Jeremy Zilar
+Author URI: http://jeremyzilar.com
 License: GPL2
 */
 
@@ -14,8 +14,8 @@ License: GPL2
 
     The development of this software was made possible using the following components:
     
-    - sg-bookmarks by sebastiangreger
-      https://github.com/sebastiangreger/sg-bookmarks
+    - worthreading by sebastiangreger
+      https://github.com/sebastiangreger/worthreading
       Licensed Under: GNU General Public License v2 (GPL-2)
 
     - Wordpress-Bookmarks by aaronpk
@@ -51,22 +51,22 @@ if ( !function_exists( 'add_action' ) ) {
 * Load admin UI functionalities if admin
 */
 if ( is_admin() ) {
-    require_once dirname( __FILE__ ) . '/sg-bookmarks-admin.php';
+    require_once dirname( __FILE__ ) . '/worthreading-admin.php';
 }
 
 
 /**
- * sgBookmarks Plugin Class
+ * worthReading Plugin Class
  *
  * @author Sebastian Greger
  */
-class sgBookmarks {
+class worthReading {
 
 
     /**
     * Adds the custom post type and taxonomy for the bookmark management; to be run on 'init' hook
     */
-    function post_type_and_taxonomy() {
+    public static function post_type_and_taxonomy() {
 
         // bookmarks are stored in a custom post type 'bookmark'
         register_post_type('bookmark', array(
@@ -84,12 +84,13 @@ class sgBookmarks {
                 'not_found_in_trash' => __('No bookmarks found in Trash'),
                 'parent_item_colon'  => ''
             ),
-            'public'             => false,
-            'publicly_queryable' => false,
+            'public'             => true,
+            'publicly_queryable' => true,
+            'publicly_queryable' => true,
             'show_ui'            => true,
             'menu_position'      => 20,
             'query_var'          => true,
-            'rewrite'            => false,
+            'rewrite'            => true,
             'capability_type'    => 'post',
             'supports'           => array('title','thumbnail'),
             'taxonomies'         => array('bookmark_tag'),
@@ -119,14 +120,14 @@ class sgBookmarks {
     /**
     * Sets up the neat URLs when plugin is activated
     */
-    function activate() {
+    public static function activate() {
 
         // call the function to define the custom post type
-        sgBookmarks::post_type_and_taxonomy();
+        worthReading::post_type_and_taxonomy();
         
         // add the rewrite rules for the listing page and entry form popup
-        add_rewrite_rule( 'bookmarks/?$', 'wp-content/plugins/sg-bookmarks/sg-bookmarks-browse.php', 'top' );
-        add_rewrite_rule( 'bookmarks/add/?$', 'wp-content/plugins/sg-bookmarks/sg-bookmarks-add.php', 'top' );
+        add_rewrite_rule( 'bookmarks/?$', 'wp-content/plugins/worthReading/worthreading-browse.php', 'top' );
+        add_rewrite_rule( 'bookmarks/add/?$', 'wp-content/plugins/worthReading/worthreading-add.php', 'top' );
         
         // flush the rewrite rules
         flush_rewrite_rules();
@@ -137,7 +138,7 @@ class sgBookmarks {
     /**
     * Flushes URL rewrite rules when plugin is deactivated
     */
-    function deactivate() {
+    public static function deactivate() {
         
         // flush the rewrite rules
         flush_rewrite_rules();
@@ -148,10 +149,10 @@ class sgBookmarks {
 }
 
 
-$sgbookmarks = new sgBookmarks();
+$worthReading = new worthReading();
 
-register_activation_hook(__FILE__, array ( 'sgBookmarks', 'activate') );
-register_deactivation_hook(__FILE__, array ( 'sgBookmarks', 'deactivate' ) );
+register_activation_hook(__FILE__, array ( 'worthReading', 'activate') );
+register_deactivation_hook(__FILE__, array ( 'worthReading', 'deactivate' ) );
 
-add_action( 'init', array( 'sgBookmarks', 'post_type_and_taxonomy' ) );
+add_action( 'init', array( 'worthReading', 'post_type_and_taxonomy' ) );
 

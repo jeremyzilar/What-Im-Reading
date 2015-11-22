@@ -1,7 +1,10 @@
-What I'm Reading
+Worth Reading
 ============
 
 An experimental WordPress 3.8 plugin to manage bookmarks with custom page type "bookmark" and custom taxonomy
+
+***Bookmarklet***
+``` javascript:(function(){ var desc = encodeURI(document.getSelection()); if (!desc.length) { desc = '' } var url = 'http://local.work/wp/bookmarks/add/?url=' + encodeURIComponent(location.href) + '&title=' + encodeURIComponent(document.title) + '&desc=' + desc; window.open(url,'bookmark','left=20,top=20,width=450,height=500,toolbar=0,location=0,resizable=1'); })(); ```
 
 ## Description
 
@@ -30,7 +33,7 @@ The first seeds for the code were taken from a related project by Aaron Parecki 
 
 ## Changelog
 
-Project maintained on github at [sebastiangreger/sg-bookmarks](https://github.com/sebastiangreger/sg-bookmarks).
+Project maintained on github at [sebastiangreger/worthreading](https://github.com/sebastiangreger/worthreading).
 
 ### 1.0
 

@@ -11,22 +11,22 @@ if ( !function_exists( 'add_action' ) ) {
 
 
 /**
- * sgBookmarksAdmin Plugin Class
+ * worthReadingAdmin Plugin Class
  *
  * @author Sebastian Greger
  */
-class sgBookmarksAdmin {
+class worthReadingAdmin {
 
 
     /**
     * Registers admin UI meta boxes
     */
-    function sg_bookmark_add_meta_boxes() {
+    public static function sg_bookmark_add_meta_boxes() {
         add_meta_box(
         	'sg_bookmark_headers',
         	'Bookmark',
         	array(
-        		'sgBookmarksAdmin',
+        		'worthReadingAdmin',
         		'sg_bookmark_metabox'
         	),
         	'bookmark',
@@ -41,7 +41,7 @@ class sgBookmarksAdmin {
     * 
     * @param object $post WP post object
     */
-    function sg_bookmark_metabox($post) {
+    public static function sg_bookmark_metabox($post) {
         $custom = get_post_custom($post->ID);
         echo '<table width="100%">';
         echo '<tr><td width="110"><b>URL:</b></td><td><input type="text" name="sg_bookmark_link_url" value="'.($custom && $custom['link_url'] ? htmlspecialchars(array_pop($custom['link_url'])) : '').'" style="width: 100%"/></td></tr>';
@@ -62,7 +62,7 @@ class sgBookmarksAdmin {
     /**
     * Saves the bookmark data if manually edited in the admin ui
     */
-    function sg_save_bookmark() {
+    public static function sg_save_bookmark() {
         global $post;
         if ($_POST['sg_bookmark_link_url']) {
             update_post_meta($post->ID, 'link_url', $_POST['sg_bookmark_link_url'], false);
@@ -79,14 +79,14 @@ class sgBookmarksAdmin {
     /**
     * Adds an options page to the admin UI
     */
-	function settings() {
+	public static function settings() {
 	    add_options_page(
 	    	'Bookmarks settings',		// HTML page title
 	    	'Bookmarks',				// Left menu title
 	    	'administrator',			// capability required for this admin page
 	    	'sg_bookmarks_settings',	// unique key
 	    	array(						// function for HTML content
-	    		'sgBookmarksAdmin',
+	    		'worthReadingAdmin',
 	    		'settings_html'
 	    	)
 	    );
@@ -96,7 +96,7 @@ class sgBookmarksAdmin {
     /**
     * Outputs the HTML for the options page, including the bookmarklet to copy-paste
     */
-	function settings_html() {
+	public static function settings_html() {
 	    $redirect = (get_option('sg_bookmarks_dereferer') != '') ? get_option('sg_bookmarks_dereferer') : '';
 		$html = '<div class="wrap">';
 		$html .= '<h2>Bookmark Settings</h2>';
@@ -126,11 +126,11 @@ class sgBookmarksAdmin {
 }
 
 
-$sgbookmarksadmin = new sgBookmarksAdmin();
+$worthReadingadmin = new worthReadingAdmin();
 
 // add the meta boxes to the admin ui
-add_action( 'admin_menu', array( 'sgBookmarksAdmin', 'sg_bookmark_add_meta_boxes' ) );
-add_action( 'save_post', array( 'sgBookmarksAdmin', 'sg_save_bookmark' ) );
+add_action( 'admin_menu', array( 'worthReadingAdmin', 'sg_bookmark_add_meta_boxes' ) );
+add_action( 'save_post', array( 'worthReadingAdmin', 'sg_save_bookmark' ) );
 
 // add options page to admin ui
-add_action('admin_menu', array( 'sgBookmarksAdmin', 'settings' ) );
+add_action('admin_menu', array( 'worthReadingAdmin', 'settings' ) );
