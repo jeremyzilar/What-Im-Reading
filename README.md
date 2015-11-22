@@ -14,7 +14,7 @@ The first seeds for the code were taken from a related project by Aaron Parecki 
 
 ## Features
 
-* Custom post type 'bookmark' and custom taxonomy 'bookmark_tag' to store bookmarks and their tags
+* Custom post type 'bookmark' and custom taxonomy 'publication' to store bookmarks and their tags
 * Data fields: title, URL, tags, description, via (a note field to store a reference how the website was discovered)
 * Bookmark browsing frontend (yoursite.com/bookmarks), including a tag search
 * Bookmarklet (copy-paste from the settings page, tested on Firefox only) that opens a pop-up dialogue window for adding an open page as a bookmark (yoursite.com/bookmarks/add)

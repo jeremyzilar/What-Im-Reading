@@ -81,7 +81,7 @@ if ( !current_user_can( 'manage_options' ) ) {
 	            if ( $tag != '' ) {
 	            	$tax_query = array(
 				        array( 
-				            'taxonomy' => 'bookmark_tag', //or tag or custom taxonomy
+				            'taxonomy' => 'publication', //or tag or custom taxonomy
 				            'field'    => 'slug', 
 				            'terms'    => $tag
 				        ) 
@@ -132,7 +132,7 @@ if ( !current_user_can( 'manage_options' ) ) {
 	                $list .= '</a>';
 
 	                // output the tags of the bookmark, each linked to the tag list
-	                $terms = get_the_terms( $post->ID, 'bookmark_tag' );
+	                $terms = get_the_terms( $post->ID, 'publication' );
 	                if ( $terms && ! is_wp_error( $terms ) ) : 
 	                    $taglist = array();
 	                	$list .= '<span class="tags">';

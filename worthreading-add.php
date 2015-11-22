@@ -53,7 +53,7 @@ add_action( 'wp_enqueue_scripts', 'add_suggest_script' ); ?>
 						// create the custom post entry
 						$new_post = array(
 							'post_title'	=>	$_POST['title'],
-							'tax_input' 	=>	array( 'bookmark_tag' => explode(",", $_POST['bookmark_tags']) ),
+							'tax_input' 	=>	array( 'publication' => explode(",", $_POST['publications']) ),
 							'post_status'	=>	'publish',
 							'post_type'		=>	'bookmark'
 						);
@@ -90,9 +90,9 @@ add_action( 'wp_enqueue_scripts', 'add_suggest_script' ); ?>
 						<label for="link_url">URL:</label>
 						<input type="text" id="link_url" tabindex="2" name="link_url" value="<?php if (strlen($_GET['url']) > 0 ) { echo $_GET['url']; } ?>" />
 
-						<label for="bookmark_tags">Tags (comma separated):</label>
-						<input type="text" id="bookmark_tags" tabindex="3" name="bookmark_tags" />
-						<script>window.onload=function(){ document.getElementById('bookmark_tags').focus(); }</script>
+						<label for="publications">Tags (comma separated):</label>
+						<input type="text" id="publications" tabindex="3" name="publications" />
+						<script>window.onload=function(){ document.getElementById('publications').focus(); }</script>
 
 						<label for="link_desc">Description:</label>
 						<input type="text" id="link_desc" tabindex="4" name="link_desc" value="<?php if (strlen($_GET['desc']) > 0 ) { echo $_GET['desc']; } ?>" />
@@ -115,7 +115,7 @@ add_action( 'wp_enqueue_scripts', 'add_suggest_script' ); ?>
 
 				<script type="text/javascript">
 				jQuery(window).load(function(){
-		        	jQuery('#bookmark_tags').suggest("<?php echo get_bloginfo('wpurl'); ?>/wp-admin/admin-ajax.php?action=ajax-tag-search&tax=bookmark_tag", {multiple:true, multipleSep: ","});
+		      jQuery('#publications').suggest("<?php echo get_bloginfo('wpurl'); ?>/wp-admin/admin-ajax.php?action=ajax-tag-search&tax=publication", {multiple:true, multipleSep: ","});
 				});		        	
 				</script>
         </body>
