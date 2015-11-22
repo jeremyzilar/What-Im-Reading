@@ -62,7 +62,7 @@ if ( !current_user_can( 'manage_options' ) ) {
 						$new_post = array(
 							'post_title'	=>	$_POST['title'],
 							'tax_input' 	=>	array( 'bookmark_tag' => explode(",", $_POST['bookmark_tags']) ),
-							'post_status'	=>	'private',
+							'post_status'	=>	'public',
 							'post_type'		=>	'bookmark'
 						);
 						$postid = wp_insert_post($new_post);
