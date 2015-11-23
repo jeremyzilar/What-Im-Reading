@@ -10,6 +10,8 @@ if ( !current_user_can( 'manage_options' ) ) {
 }?>
 
 <?php
+	
+
 	// Scripts
 	function add_suggest_script() {
   	wp_enqueue_script( 'suggest', get_bloginfo('wpurl').'/wp-includes/js/jquery/suggest.js', array(), '', true );
@@ -92,6 +94,68 @@ EOF;
 				// if there is no POST data, display the form
 				} else {
 
+					include_once('worthreading-meta.php');
+					
+					function file_get_contents_curl($url) {
+					  $ch = curl_init();
+					  curl_setopt($ch, CURLOPT_USERAGENT,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.17 (KHTML, like Gecko) Chrome/24.0.1312.52 Safari/537.17');
+					  curl_setopt($ch, CURLOPT_HEADER, 0);
+					  curl_setopt($ch, CURLOPT_AUTOREFERER, true);
+					  curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+					  curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
+					  curl_setopt($ch, CURLOPT_URL, $url);
+					  $data = curl_exec($ch);
+					  curl_close($ch);
+					  return $data;
+					}
+
+					if (strlen($_GET['url']) > 0 ) { 
+						$url = preg_replace('/\?.*/', '', $_GET['url']) . '?=worthreading';
+					}
+					// echo $url;
+					$html = file_get_contents_curl($url);
+					// print_r($html);
+					//parsing begins here:
+					$doc = new DOMDocument();
+					@$doc->loadHTML($html);
+
+					//get and display what you need:
+					$nodes = $doc->getElementsByTagName('title');
+					$titletag = $nodes->item(0)->nodeValue;
+
+					$metas = $doc->getElementsByTagName('meta');
+
+					for ($i = 0; $i < $metas->length; $i++) {
+					  $meta = $metas->item($i);
+					  if($meta->getAttribute('name') == 'keywords'){
+					  	$keywords = $meta->getAttribute('content');
+					  }
+					  if($meta->getAttribute('property') == 'og:title') {
+							$headline = $meta->getAttribute('content');
+					  }
+					  if (empty($headline)) {
+					  	$headline = $_GET['title'];
+					  }
+					  if($meta->getAttribute('property') == 'og:site_name'){
+					  	$site_name = $meta->getAttribute('content');
+					  }
+					  if($meta->getAttribute('property') == 'og:image'){
+					  	$image = $meta->getAttribute('content');
+					  }
+					  if (empty($_GET['desc'])) {
+							if($meta->getAttribute('name') == 'description'){
+								$description = $meta->getAttribute('content');
+							}
+					  } else {
+					  	$description = $_GET['desc'];
+					  }
+					}
+
+					// echo "Site: $site_name". '<br/><br/>';
+					// echo "Description: $description". '<br/><br/>';
+					// echo "head: $headline". '<br/><br/>';
+					// echo "Keywords: $keywords". '<br/><br/>';
+					// echo "IMG: $image". '<br/><br/>';
 					?>
 					<div id="head">
 						<div class="color color-dark"></div>
@@ -103,30 +167,30 @@ EOF;
 					<form id="new_post" name="new_post" method="post" action="" enctype="multipart/form-data">
 
 						<div class="bookmark-title">
-							<label for="title">Title:</label>
-							<input type="text" id="title" tabindex="1" name="title" value="<?php if (strlen($_GET['title']) > 0 ) { echo $_GET['title']; } ?>" />	
+							<label for="title">Headline:</label>
+							<input type="text" id="title" tabindex="1" name="title" value="<?php if (strlen($headline) > 0 ) { echo $headline; } ?>" />	
 						</div>
 						
 						<div class="bookmark-url">
 							<label for="link_url">URL</label>
-							<input type="text" id="link_url" tabindex="2" name="link_url" value="<?php if (strlen($_GET['url']) > 0 ) { echo $_GET['url']; } ?>" />	
+							<input type="text" id="link_url" tabindex="2" name="link_url" value="<?php echo $url; ?>" />	
 							<small>e.g. http://nytimes.com</small>
-						</div>
-
-						<div class="bookmark-pub">
-							<label for="publications">Publication</label>
-							<input type="text" id="publications" tabindex="3" name="publications" />
-							<small>e.g. The New York Times</small>
 						</div>
 
 						<div class="bookmark-desc">
 							<label for="link_desc">Description</label>
-							<textarea type="text" id="link_desc" tabindex="4" name="link_desc" /><?php if (strlen($_GET['desc']) > 0 ) { echo $_GET['desc']; } ?></textarea>
+							<textarea type="text" id="link_desc" tabindex="3" name="link_desc" /><?php echo $description; ?></textarea>
 						</div>
+
+						<div class="bookmark-pub">
+							<label for="publications">Publication</label>
+							<input type="text" id="publications" tabindex="4" name="publications" value="<?php if (strlen($site_name) > 0 ) { echo $site_name; } ?>" />
+							<small>e.g. The New York Times</small>
+						</div>
+
+						<script>window.onload=function(){ document.getElementById('link_desc').focus(); }</script>
 						
-						<script>window.onload=function(){ document.getElementById('publications').focus(); }</script>
-						
-						<div class="bookmark-via">
+						<div class="bookmark-via hidden">
 							<label for="link_via">via:</label>
 							<input type="text" id="link_via" tabindex="5" name="link_via" />
 							<small>e.g. @jeremyzilar</small>
