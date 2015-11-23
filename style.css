@@ -1,6 +1,6 @@
 * {
   font-family:georgia,serif;
-  font-family:Helvetica, Arial,sans-serif;
+  font-family:'Lato',Helvetica, Arial,sans-serif;
   font-size:16px;
 }
 .hidden{
@@ -12,20 +12,37 @@ body {
 }
 
 #head{
-  padding: 8px 0 10px 0;
-  background: #222D49;
+  padding: 0;
+  background: #fff;
+  border-bottom: 1px #222D49 solid;
   color:#fff;
 }
 
+#head .color{
+  height: 6px;
+  width: 100%;
+}
+
+#head .color-dark{
+ background: #222D49; 
+}
+#head .color-med{
+ background: #475F9E; 
+}
+#head .color-light{
+ background: #6588EC;
+}
 #head h1{
   margin: 0;
-  color:#fff;
+  padding: 7px 0 9px 0;
+  color:#222D49;
   font-size: 18px;
-  font-weight: 300;
+  font-weight: 900;
   text-align: center;
 }
 
 form{
+  margin: 0;
   padding: 15px 10px;
 }
 form > div {
@@ -35,9 +52,11 @@ form > div {
 }
 label {
   margin-bottom: 5px;
+  padding: 0 3px;
   display:block;
-  font-size: 14px;
-  font-weight: 300;
+  font-size: 12px;
+  font-weight: 400;
+  color:#475F9E;
 }
 input[type=text],
 input[type=email],
@@ -66,6 +85,12 @@ textarea:focus {
   border-color: #222D49;
 }
 
+small{
+  padding:5px 3px;
+  font-size: 10px;
+  color: #BDBDBD;
+  display: block;
+}
 .bookmark-title label{
   display: none;
 }
@@ -107,8 +132,9 @@ textarea:focus {
   background:#222D49;
   color:#fff;
   font-weight: 900;
-  border:none;
+  border:3px #6588EC solid;
   border-radius: 3px;
+  width: 100%;
 }
 .btn,
 #submit:hover{
