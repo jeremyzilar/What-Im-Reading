@@ -102,16 +102,16 @@ class worthReadingAdmin {
 		$html .= '<h2>Bookmark Settings</h2>';
 		$html .= '<form action="options.php" method="post" name="options">';
 		$html .= '<p>Bookmarklet to add new bookmarks with one click (tested on Firefox only):</p>';
-		$html .= "
-<code>javascript:(function(){
+		$bookmarkjs = "
+javascript:(function(){
     var desc = encodeURI(document.getSelection());
     if (!desc.length) {
         desc = ''
     }
     var url = '" . get_bloginfo('wpurl') . "/bookmarks/add/?url=' + encodeURIComponent(location.href) + '&title=' + encodeURIComponent(document.title) + '&desc=' + desc;
     window.open(url,'bookmark','left=20,top=20,width=550,height=500,toolbar=0,location=0,resizable=1');
-})();
-</code>";
+})();";
+    $html .= '<h3><a class="bookmark-button" href="'.$bookmarkjs.'">Bookmark</a></h3>';
 		$html .= wp_nonce_field('update-options');
 		$html .= '<table class="form-table"><tr valign="top">';
 		$html .= '<th><label for="sg_bookmarks_dereferer">Dereferer URL</label></th><td class="row"><input type="text" name="sg_bookmarks_dereferer" class="regular-text code" value="' . $redirect . '" /><p class="description">If you are using a dereferer script, enter the URL here (all bookmark URLs will be appended to this URL)</p></td>';
