@@ -30,6 +30,7 @@ if ( !current_user_can( 'manage_options' ) ) {
 ?>
 
     <html>
+    	<meta charset="utf-8">
       <head>
 				<title>Add bookmark</title>
 				<link rel="icon" href="<?php echo plugins_url( 'favicon-add.png' , __FILE__ ); ?>">
@@ -57,10 +58,25 @@ if ( !current_user_can( 'manage_options' ) ) {
 						);
 						$post_id = wp_insert_post($new_post, true);
 
-						// add the bookmark's meta data
+
+        		// add in the bookmark image
+        		$imgfile = $_POST['img_file'];
+        		require_once(ABSPATH . 'wp-admin' . '/includes/image.php');
+    		    require_once(ABSPATH . 'wp-admin' . '/includes/file.php');
+    		    require_once(ABSPATH . 'wp-admin' . '/includes/media.php');
+    		    $file = media_sideload_image( $imgfile, $post_id, 'desc desc' );
+    		    $attachments = get_posts(array('numberposts' => '1', 'post_parent' => $post_id, 'post_type' => 'attachment', 'post_mime_type' => 'image', 'order' => 'ASC'));
+    		    if(sizeof($attachments) > 0){
+    		      // set image as the post thumbnail
+    		      set_post_thumbnail($post_id, $attachments[0]->ID);
+    		    } 
+
+        		// add the bookmark's meta data
         		add_post_meta($post_id, 'link_url',  $_POST['link_url'],  true);
         		add_post_meta($post_id, 'link_desc', $_POST['link_desc'], true);
         		add_post_meta($post_id, 'link_via',  $_POST['link_via'],  true);
+        		// add_post_meta($post_id, '_thumbnail_id',  $attachments[0]->ID,  true);
+
 
 						// give positive user feedback
 						echo <<< EOF
@@ -94,8 +110,6 @@ EOF;
 				// if there is no POST data, display the form
 				} else {
 
-					include_once('worthreading-meta.php');
-					
 					function file_get_contents_curl($url) {
 					  $ch = curl_init();
 					  curl_setopt($ch, CURLOPT_USERAGENT,'Mozilla/5.0 (Windows NT 6.1; WOW64) AppleWebKit/537.17 (KHTML, like Gecko) Chrome/24.0.1312.52 Safari/537.17');
@@ -186,6 +200,14 @@ EOF;
 							<label for="publications">Publication</label>
 							<input type="text" id="publications" tabindex="4" name="publications" value="<?php if (strlen($site_name) > 0 ) { echo $site_name; } ?>" />
 							<small>e.g. The New York Times</small>
+						</div>
+
+						<div class="bookmark-img">
+							<img src="<?php echo $image; ?>" alt="$headline" class="thumb">
+							<div>
+								<label for="img_file">Image</label>
+								<input type="text" id="img_file" tabindex="6" name="img_file" value="<?php echo $image; ?>" />								
+							</div>
 						</div>
 
 						<script>window.onload=function(){ document.getElementById('link_desc').focus(); }</script>

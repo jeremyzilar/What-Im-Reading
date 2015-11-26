@@ -126,6 +126,19 @@ small{
   font-size: 16px;
 }
 
+.bookmark-img img{
+  margin: 0 5px 0 0;
+  width: 100px;
+  display: inline-block;
+}
+.bookmark-img div{
+  display: inline-block;
+}
+.bookmark-img input{
+  font-weight: 500;
+  font-size: 12px;
+}
+
 .btn,
 #submit {
   padding:10px;
